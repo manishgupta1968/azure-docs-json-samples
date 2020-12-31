@@ -38,7 +38,7 @@ steps:
     azureSubscription: 'AzureServiceConnection@TenantRootGroup'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'pwd && dir && az deployment mg create -c --name demoMGDeployment --location WestUS --management-group-id mg-s-mg --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
+    inlineScript: 'az deployment mg create --name demoMGDeployment --location WestUS --management-group-id mg-s-mg --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
     arguments: 'temp'
     useGlobalConfig: true
     workingDirectory: '${{ variables.workingDirectory }}'
