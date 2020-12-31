@@ -37,18 +37,18 @@ steps:
   inputs:
     azureSubscription: 'AzureServiceConnection@TenantRootGroup'
     scriptType: 'batch'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az deployment mg create --name demoMGDeployment --location WestUS --management-group-id mg-s-mg --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
+    scriptLocation: 'scriptPath'
+    scriptPath: '4.create-policy.bat'
     arguments: 'temp'
     useGlobalConfig: false
     workingDirectory: '${{ variables.workingDirectory }}'
-
+    
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'AzureServiceConnection@TenantRootGroup'
     scriptType: 'batch'
-    scriptLocation: 'scriptPath'
-    scriptPath: '4.create-policy.bat'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az deployment mg create --name demoMGDeployment --location WestUS --management-group-id mg-s-mg --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
     arguments: 'temp'
     useGlobalConfig: false
     workingDirectory: '${{ variables.workingDirectory }}'
