@@ -39,7 +39,7 @@ steps:
     scriptType: 'batch'
     scriptLocation: 'scriptPath'
     scriptPath: '${{ variables.workingDirectory }}/4.create-policy.bat'
-    arguments: '${{ variables.workingDirectory }} azuredeploy.json azuredeploy.parameters.json'
+    arguments: '${{ variables.workingDirectory }} ${{ csmFileVar }} ${{ csmParametersFileVar }}'
     useGlobalConfig: false
 
 - task: AzureCLI@2
@@ -55,11 +55,11 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Management Group'
-    azureResourceManagerConnection: 'AzureServiceConnection@Project-GTS-MCID-POC'
+    azureResourceManagerConnection: 'AzureServiceConnection@TenantRootGroup'
     location: '${{ variables.location }}'
     templateLocation: 'Linked artifact'
-    csmFile: '${{ variables.csmFileVar }}'
-    csmParametersFile: '${{ variables.csmParametersFileVar }}'
+    csmFile: '${{ variables.workingDirectory }}/${{ variables.csmFileVar }}'
+    csmParametersFile: '${{ variables.workingDirectory }}/${{ variables.csmParametersFileVar }}'
     deploymentMode: 'Incremental'
     deploymentName: 'Deploys-ManagementGroups'
     deploymentOutputs: 'OutputsFromDeployment'
