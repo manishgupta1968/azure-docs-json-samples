@@ -14,9 +14,9 @@ variables:
   - name: location
     value: "West US"
   - name: csmFileVar
-    value: management-level-deployment/azuredeploy.json
+    value: azuredeploy.json
   - name: csmParametersFileVar
-    value: management-level-deployment/azuredeploy.parameters.json
+    value: azuredeploy.parameters.json
   - name: workingDirectory
     value: management-level-deployment
 
@@ -42,7 +42,7 @@ steps:
     arguments: 'temp'
     useGlobalConfig: false
     workingDirectory: '${{ variables.workingDirectory }}'
-    
+
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'AzureServiceConnection@TenantRootGroup'
