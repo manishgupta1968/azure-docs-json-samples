@@ -39,7 +39,7 @@ steps:
     scriptType: 'batch'
     scriptLocation: 'scriptPath'
     scriptPath: '${{ variables.workingDirectory }}/4.create-policy.bat'
-    arguments: '${{ variables.workingDirectory }} ${{ csmFileVar }} ${{ csmParametersFileVar }}'
+    arguments: '${{ variables.workingDirectory }} ${{ variables.csmFileVar }} ${{ variables.csmParametersFileVar }}'
     useGlobalConfig: false
 
 - task: AzureCLI@2
