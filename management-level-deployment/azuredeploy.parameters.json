@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "targetMG": {
+            "value": "mg-s-mg"
+        },
+        "nestedsubId": {
+            "value": "1b690126-06da-4a90-b59e-da4f4151b0a5"
+        },
+        "nestedRG": {
+            "value": "my-resource-group"
+        },
+        "storageAccountName": {
+            "value": "pqr"
+        },
+        "location": {
+            "value": "westus"
+        }
+    }
+}

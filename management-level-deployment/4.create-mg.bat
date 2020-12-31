@@ -1,0 +1,2 @@
+az deployment mg create -c --name demoMGDeployment --location WestUS --management-group-id 14d650c2-a41b-4e3c-a680-8485f5e8cdfe --template-file azuredeploy.json --parameters @azuredeploy.parameters.json
+REM az deployment tenant create --name demoMGDeployment --location WestUS --template-file "azuredeploy.json" --parameters @azuredeploy.parameters.json

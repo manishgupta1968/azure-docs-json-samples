@@ -1,0 +1,87 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: create-mg
+variables:
+  - name: buildType
+    value: deploy
+  - name: yourResourceGroup
+    value: manishResourceGroup
+  - name: AzureCloudServiceConnection
+    value: AzureServiceConnection@TenantRootGroup
+  - name: location
+    value: "Central US"
+  - name: csmFileVar
+    value: tenant-deployments/new-mg/azuredeploy.json
+  - name: csmParametersFileVar
+    value: tenant-deployments/new-mg/azuredeploy.parameters.json
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - tenant-deployments/new-mg 
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'AzureServiceConnection@TenantRootGroup'
+    scriptType: 'batch'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az deployment mg create --management-group-id Project-GTS-MCID-POC --name Project-GTS-MCID-POC --location CentralUS --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
+    arguments: 'temp'
+    useGlobalConfig: true
+    workingDirectory: '$(System.DefaultWorkingDirectory)/tenant-deployments/new-mg'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'AzureServiceConnection@TenantRootGroup'
+    scriptType: 'batch'
+    scriptLocation: 'scriptPath'
+    scriptPath: '4.create-mg.bat'
+    arguments: 'temp'
+    useGlobalConfig: true
+    workingDirectory: '$(System.DefaultWorkingDirectory)/tenant-deployments/new-mg'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Management Group'
+    azureResourceManagerConnection: 'AzureServiceConnection@Project-GTS-MCID-POC'
+    location: '${{ variables.location }}'
+    templateLocation: 'Linked artifact'
+    csmFile: '${{ variables.csmFileVar }}'
+    csmParametersFile: '${{ variables.csmParametersFileVar }}'
+    deploymentMode: 'Incremental'
+    deploymentName: 'Deploys-ManagementGroups'
+    deploymentOutputs: 'OutputsFromDeployment'
+    addSpnToEnvironment: false
+
+- task: ARM Outputs@6
+  condition: eq('${{ variables.buildType }}', 'deploy')
+  inputs:
+    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+    ConnectedServiceNameARM: '${{ variables.AzureCloudServiceConnection }}'
+    resourceGroupName: '${{ variables.yourResourceGroup }}'
+    whenLastDeploymentIsFailed: 'fail'
+
+- task: AzureCLI@2
+  condition: eq('${{ variables.buildType }}', 'destroy')
+  inputs:
+    azureSubscription: '${{ variables.AzureCloudServiceConnection }}'
+    scriptType: 'batch'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az group delete --yes --resource-group %1'
+    arguments: '${{ variables.yourResourceGroup }}'
+- task: BatchScript@1
+  condition: eq('${{ variables.buildType }}', 'destroy')
+  inputs:
+    filename: 'putInfoOnCommit.bat'
+    arguments: '\"All resources destroyed for $(yourResourceGroup)\"'
