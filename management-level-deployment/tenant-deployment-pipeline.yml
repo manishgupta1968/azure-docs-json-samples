@@ -12,11 +12,11 @@ variables:
   - name: AzureCloudServiceConnection
     value: AzureServiceConnection@TenantRootGroup
   - name: location
-    value: "Central US"
+    value: "West US"
   - name: csmFileVar
-    value: tenant-deployments/new-mg/azuredeploy.json
+    value: management-level-deployment/azuredeploy.json
   - name: csmParametersFileVar
-    value: tenant-deployments/new-mg/azuredeploy.parameters.json
+    value: management-level-deployment/azuredeploy.parameters.json
 
 trigger:
   branches:
@@ -24,7 +24,7 @@ trigger:
     - master
   paths:
     include:
-    - tenant-deployments/new-mg 
+    - management-level-deployment 
 
 pool:
   vmImage: 'windows-latest'
@@ -36,20 +36,20 @@ steps:
     azureSubscription: 'AzureServiceConnection@TenantRootGroup'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az deployment mg create --management-group-id Project-GTS-MCID-POC --name Project-GTS-MCID-POC --location CentralUS --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
+    inlineScript: 'az deployment mg create -c --name demoMGDeployment --location WestUS --management-group-id mg-s-mg --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
     arguments: 'temp'
     useGlobalConfig: true
-    workingDirectory: '$(System.DefaultWorkingDirectory)/tenant-deployments/new-mg'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/tenant-deployments'
 
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'AzureServiceConnection@TenantRootGroup'
     scriptType: 'batch'
     scriptLocation: 'scriptPath'
-    scriptPath: '4.create-mg.bat'
+    scriptPath: '4.create-policy.bat'
     arguments: 'temp'
     useGlobalConfig: true
-    workingDirectory: '$(System.DefaultWorkingDirectory)/tenant-deployments/new-mg'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/tenant-deployments'
 
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
