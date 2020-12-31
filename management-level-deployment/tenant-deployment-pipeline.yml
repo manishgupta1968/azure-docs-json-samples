@@ -17,6 +17,8 @@ variables:
     value: management-level-deployment/azuredeploy.json
   - name: csmParametersFileVar
     value: management-level-deployment/azuredeploy.parameters.json
+  - name: workingDirectory
+    value: management-level-deployment
 
 trigger:
   branches:
@@ -39,7 +41,7 @@ steps:
     inlineScript: 'pwd && dir && az deployment mg create -c --name demoMGDeployment --location WestUS --management-group-id mg-s-mg --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
     arguments: 'temp'
     useGlobalConfig: true
-    workingDirectory: 'tenant-deployments'
+    workingDirectory: '${{ variables.workingDirectory }}'
 
 - task: AzureCLI@2
   inputs:
@@ -49,7 +51,7 @@ steps:
     scriptPath: '4.create-policy.bat'
     arguments: 'temp'
     useGlobalConfig: true
-    workingDirectory: '$(System.DefaultWorkingDirectory)/tenant-deployments'
+    workingDirectory: '${{ variables.workingDirectory }}'
 
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
