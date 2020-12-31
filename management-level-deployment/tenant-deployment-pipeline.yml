@@ -36,10 +36,10 @@ steps:
     azureSubscription: 'AzureServiceConnection@TenantRootGroup'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az deployment mg create -c --name demoMGDeployment --location WestUS --management-group-id mg-s-mg --template-file azuredeploy.json --parameters @azuredeploy.parameters.json'
+    inlineScript: 'az deployment mg create -c --name demoMGDeployment --location WestUS --management-group-id mg-s-mg --template-file tenant-deployments/azuredeploy.json --parameters @tenant-deployments/azuredeploy.parameters.json'
     arguments: 'temp'
     useGlobalConfig: true
-    workingDirectory: '$(System.DefaultWorkingDirectory)/tenant-deployments'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: AzureCLI@2
   inputs:
