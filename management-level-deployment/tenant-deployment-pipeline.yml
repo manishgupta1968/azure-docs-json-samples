@@ -39,7 +39,7 @@ steps:
     scriptType: 'batch'
     scriptLocation: 'scriptPath'
     scriptPath: '${{ variables.workingDirectory }}/4.create-policy.bat'
-    arguments: '${{ variables.workingDirectory }}/azuredeploy.json ${{ variables.workingDirectory }}/azuredeploy.parameters.json'
+    arguments: '${{ variables.workingDirectory }} azuredeploy.json azuredeploy.parameters.json'
     useGlobalConfig: false
 
 - task: AzureCLI@2
