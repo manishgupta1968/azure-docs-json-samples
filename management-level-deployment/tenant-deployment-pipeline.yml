@@ -38,10 +38,9 @@ steps:
     azureSubscription: 'AzureServiceConnection@TenantRootGroup'
     scriptType: 'batch'
     scriptLocation: 'scriptPath'
-    scriptPath: '4.create-policy.bat'
+    scriptPath: '${{ variables.workingDirectory }}/4.create-policy.bat'
     arguments: 'temp'
     useGlobalConfig: false
-    workingDirectory: '${{ variables.workingDirectory }}'
 
 - task: AzureCLI@2
   inputs:
