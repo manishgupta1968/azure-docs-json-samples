@@ -2,6 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "newMgName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specify the name of the new management group. that will be created"
+      }
+    },
     "targetMG": {
       "type": "string",
       "metadata": {
@@ -37,6 +43,13 @@
     "mgScope": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('targetMG'))]"
   },
   "resources": [
+    {
+        "type": "Microsoft.Management/managementGroups",
+        "apiVersion": "2020-02-01",
+        "name": "[parameters('newMgName')]",
+        "properties": {
+        }
+    },
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "apiVersion": "2019-09-01",

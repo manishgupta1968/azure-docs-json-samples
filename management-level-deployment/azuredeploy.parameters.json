@@ -5,6 +5,9 @@
         "targetMG": {
             "value": "mg-s-mg"
         },
+        "newMgName": {
+            "value": "new-mg"
+        },
         "nestedsubId": {
             "value": "1b690126-06da-4a90-b59e-da4f4151b0a5"
         },
