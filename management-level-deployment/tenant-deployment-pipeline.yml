@@ -55,7 +55,7 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Management Group'
-    azureResourceManagerConnection: '${{ variables.AzureServiceConnection}}'
+    azureResourceManagerConnection: '${{ variables.AzureCloudServiceConnection}}'
     location: '${{ variables.location }}'
     templateLocation: 'Linked artifact'
     csmFile: '${{ variables.workingDirectory }}/${{ variables.csmFileVar }}'
